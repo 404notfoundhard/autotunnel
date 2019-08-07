@@ -1,2 +1,2 @@
 # flask_app
-Simple flask app with flask_rest
+Simple flask app and flask_rest
