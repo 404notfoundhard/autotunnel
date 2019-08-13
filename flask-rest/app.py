@@ -52,9 +52,9 @@ connect_list = ConnectlistSchema(strict=True)
 # connect_lists = ConnectlistSchema(strict=True, many=True)
 
 
-# @app.errorhandler(404)
-# def notfound(nfd):
-#     exit(0)
+@app.errorhandler(404)
+def notfound(nfd):
+    exit(0)
 
 
 @app.route('/get_info/<hostname>', methods=['GET'])

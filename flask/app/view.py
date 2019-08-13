@@ -1,12 +1,40 @@
-from app import app, ConnectlistSchema, Connectlist, time_on_status
-from flask import render_template
+from app import app, ConnectlistSchema, Connectlist, time_on_status, db
+from flask import render_template, flash, request, redirect, url_for    
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+
 
 connect_list = ConnectlistSchema(strict=True)
 connect_lists = ConnectlistSchema(strict=True, many=True)
 
 
-@app.route('/')
+class ReusableForm(Form):
+    name = TextField('Name:', validators=[validators.required()])
+
+
+@app.route('/delete', methods=['GET'])
+@app.route('/delete/<id>', methods=['GET'])
+def delete_host_get(id):
+    return redirect('/')
+
+
+@app.route('/delete/<id>', methods=['POST'])
+def delete_host(id):
+    Connectlist.query.filter_by(id=id).delete()
+    # print(host)
+    # Connectlist.query.get(id).delete()
+    # db.session.delete(host)
+    db.session.commit()
+    return redirect('/')
+
+
+@app.route('/', methods=['GET','POST'])
 def index():
+    # form = ReusableForm(request.form)
+    # if request.method == 'POST':
+    #     print(request.form['ssh_port_input'])
+    #     print(request.form['mysql_port_input'])
+    #     print(request.form['vnc_port_input'])
+    #     print(request.form['hostname'])
     all_info = connect_lists.dump(Connectlist.query.all())[0]
     all_info = list(filter(None, all_info))
     hosts_status = []
