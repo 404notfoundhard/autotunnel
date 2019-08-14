@@ -41,7 +41,7 @@ Hello unknown
   <!-- Modal -->
   <div class="modal fade" id="modalstatus{{ host.index }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalCenterTitle">Port status for {{ host.hostname }}</h5>
@@ -52,16 +52,16 @@ Hello unknown
         <div class="modal-body">
           <div class="container">
             <div class="row">
-              <div class="col-md-4">SSH port:</div>
-              <div class="col-md-4 ml-centr">{{host.ssh_port}}</div>
+              <div class="col-md">SSH port:</div>
+              <div class="col-md">{{host.ssh_port}}</div>
             </div>
             <div class="row">
-              <div class="col-md-4">MYSQL port:</div>
-              <div class="col-md-4 ml-centr">{{host.db_port}}</div>
+              <div class="col-md">MYSQL port:</div>
+              <div class="col-md">{{host.db_port}}</div>
             </div>
             <div class="row">
-              <div class="col-md-4">VNC port:</div>
-              <div class="col-md-4 ml-centr">{{host.vnc_port}}</div>
+              <div class="col-md">VNC port:</div>
+              <div class="col-md">{{host.vnc_port}}</div>
             </div>
 
           </div>
