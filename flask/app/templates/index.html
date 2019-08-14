@@ -18,7 +18,20 @@ Hello unknown
             - {{ host.hostname }}
           </div>
           <div class="col-sm">
-            <button type="button" class="btn btn-primary btn-sm badge-pill">Get command</button>
+            <p hidden id='{{ host.index }}'>ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }} service_user@monit.tru.io -i /path/to/key</p>
+
+            <button onclick="copyToClipboard('{{ host.index }}')" type="button" data-timeout="500"
+              data-toggle="popover" data-placement="right" data-content="ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L
+              {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }}
+              service_user@monit.tru.io -i /path/to/key is COPIED!" class="btn btn-primary btn-sm badge-pill">Ssh
+              command to clipboard</button>
+
+
+            <!-- <button onclick="copyToClipboard('p1')">Copy P1</button> -->
+            <!-- <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover"
+              data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+              Popover on right
+            </button> -->
           </div>
           <div class="col-sm">
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"

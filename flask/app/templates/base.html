@@ -18,9 +18,34 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
 </head>
 <script type="text/javascript">
+  function copyToClipboard(elementId) {
+    // Create a "hidden" input
+    var aux = document.createElement("input");
+    // Assign it the value of the specified element
+    aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+    // Append it to the body
+    document.body.appendChild(aux);
+    // Highlight its content
+    aux.select();
+    // Copy the highlighted text
+    document.execCommand("copy");
+    // Remove it from the body
+    document.body.removeChild(aux);
+  }
+
+  
+
   $(function () {
-      $("[rel='tooltip']").tooltip();
-  });
+    $('[data-toggle="popover"]').popover()
+  })
+
+  $('[data-toggle="popover"][data-timeout]').on('shown.bs.popover', function() {
+    this_popover = $(this);
+    setTimeout(function () {
+        this_popover.popover('destroy');
+    }, $(this).data("timeout"));
+});
+
 </script>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-end">
