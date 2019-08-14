@@ -45,6 +45,9 @@ def index():
         host_status['status'] = status
         host_status['hostname'] = info['hostname']
         host_status['index'] = info['id']
+        host_status['ssh_port'] = info['ssh_port']
+        host_status['db_port'] = info['db_port']
+        host_status['vnc_port'] = info['vnc_port']
         hosts_status.append(host_status)
     # {'db_port': 50002, 'vnc_port': 50003, 'ssh_port': 50001,
     #  'date_time': '2019-08-07 04:44:50.274444',
