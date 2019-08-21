@@ -19,7 +19,6 @@ Hello unknown
           </div>
           <div class="col-sm">
             <p hidden id='{{ host.index }}'>ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }} service_user@monit.tru.io -i /path/to/key</p>
-
             <button onclick="copyToClipboard('{{ host.index }}')" type="button" 
               data-toggle="popover" data-placement="right" data-content="ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L
               {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }}
