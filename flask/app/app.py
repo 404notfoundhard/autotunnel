@@ -12,6 +12,21 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
+def hosts_info(all_info):
+    all_info = list(filter(None, all_info))
+    hosts_status = []
+    for info in all_info:
+        host_status = {}
+        host_status['status'] = time_on_status(info['date_time'])
+        host_status['hostname'] = info['hostname']
+        host_status['index'] = info['id']
+        host_status['ssh_port'] = info['ssh_port']
+        host_status['db_port'] = info['db_port']
+        host_status['vnc_port'] = info['vnc_port']
+        hosts_status.append(host_status)
+    return hosts_status
+
+
 def time_on_status(time_from_db):
     if time_from_db is None:
         return 'danger'
@@ -22,6 +37,7 @@ def time_on_status(time_from_db):
         return 'danger'
     else:
         return 'success'
+
 
 class Connectlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
