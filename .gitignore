@@ -1,3 +1,4 @@
+uwsgi_prod
 venv
 .vscode
 __pycache__
