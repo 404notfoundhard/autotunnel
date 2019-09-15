@@ -17,7 +17,7 @@ def hosts_info(all_info):
     hosts_status = []
     for info in all_info:
         host_status = {}
-        host_status['status'] = time_on_status(info['date_time'])
+        host_status['status'] = time_on_status(info['last_connect_time'])
         host_status['hostname'] = info['hostname']
         host_status['index'] = info['id']
         host_status['ssh_port'] = info['ssh_port']
@@ -46,7 +46,7 @@ class Connectlist(db.Model):
     db_port = db.Column(db.Integer, unique=True)
     vnc_port = db.Column(db.Integer, unique=True)
     server = db.Column(db.String(15))
-    date_time = db.Column(db.String)
+    last_connect_time = db.Column(db.String)
 
     def __init__(self):
         id = self.id
@@ -55,7 +55,7 @@ class Connectlist(db.Model):
         db_port = self.db_port
         vnc_port = self.vnc_port
         server = self.server
-        date_time = self.date_time
+        last_connect_time = self.last_connect_time
 
     def __repr__(self):
         return '< %r>' % self.hostname
@@ -64,4 +64,4 @@ class Connectlist(db.Model):
 class ConnectlistSchema(ma.Schema):
     class Meta:
         fields = ('id', 'hostname', 'ssh_port', 'db_port', 'vnc_port',
-                  'server', 'date_time')
+                  'server', 'last_connect_time')
