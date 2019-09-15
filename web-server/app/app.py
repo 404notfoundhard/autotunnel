@@ -23,8 +23,14 @@ def hosts_info(all_info):
         host_status['ssh_port'] = info['ssh_port']
         host_status['db_port'] = info['db_port']
         host_status['vnc_port'] = info['vnc_port']
+        host_status['time_check'] = info['last_connect_time'][:-7]
         hosts_status.append(host_status)
-    return hosts_status
+
+    sorted_hosts_status = sorted(
+                                 hosts_status,
+                                 key=lambda x: (x['hostname'])
+                                 )
+    return sorted_hosts_status
 
 
 def time_on_status(time_from_db):

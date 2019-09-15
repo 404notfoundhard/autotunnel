@@ -87,9 +87,6 @@ def find_available_ports():
 
 def add_new_host(hostname):
     ssh_port, vnc_port, db_port = find_available_ports()
-    print('##########################')
-    print(ssh_port, vnc_port, db_port)
-    print('##########################')
     new_usr = Connectlist(hostname=hostname,
                           ssh_port=ssh_port,
                           db_port=db_port,

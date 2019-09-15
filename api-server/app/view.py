@@ -8,9 +8,6 @@ def get_ports_info(hostname):
         ports_info = Connectlist.query.filter_by(hostname=hostname).first()
         if ports_info is None:
             add_new_host(hostname)
-            # new_usr.hostname = hostname
-            # db.session.add(new_usr)
-            # db.session.commit()
             ports_info = Connectlist.query.filter_by(hostname=hostname).first()
             return connect_list.jsonify(ports_info)
         ports_info.last_connect_time = str(datetime.utcnow())

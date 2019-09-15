@@ -28,7 +28,10 @@ def delete_host(id):
 def index():
     all_info = connect_lists.dump(Connectlist.query.all())[0]
     hosts_status = hosts_info(all_info)  # output is list
-    return render_template('index.html', all_info=all_info, hosts_status=hosts_status)
+    return render_template('index.html',
+                           all_info=all_info,
+                           hosts_status=hosts_status
+                           )
 
 
 @app.route('/login')
