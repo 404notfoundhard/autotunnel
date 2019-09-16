@@ -1,0 +1,16 @@
+[Unit]
+Description=AutoSSH tunnel
+After=network.target
+
+[Service]
+OOMScoreAdjust=-1000
+Environment="AUTOSSH_GATETIME=0"
+Environment="AUTOSSH_PIDFILE=/var/run/autossh.pid"
+Environment="AUTOSSH_LOGFILE=/var/log/autossh.log"
+PIDFile=/var/run/autossh.pid
+ExecStart=/usr/bin/autossh -N  -R {{ data.R_ssh_port }}:localhost:22 -R {{ data.R_mysql_port }}:localhost:3306 -R {{ data.R_vnc_port }}:localhost:4000 service_user@monit.tru.io -i /home/zt/.ssh/yandex_service
+ExecStop=/bin/kill -9 $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
