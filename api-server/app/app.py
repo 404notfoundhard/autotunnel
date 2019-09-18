@@ -79,8 +79,8 @@ def find_available_ports():
     available_ports = list(reserved_ports - busy_ports_tcpv)
     available_ports.sort()
     ssh_port = available_ports[0]
-    vnc_port = available_ports[1]
-    db_port = available_ports[2]
+    db_port = available_ports[1]
+    vnc_port = available_ports[2]
 
     return ssh_port, vnc_port, db_port
 
