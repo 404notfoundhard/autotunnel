@@ -1,10 +1,12 @@
 from app import Connectlist, db, app, request, datetime, connect_list
 from app import add_new_host
+from config import Configuration
 
+conf_obj = Configuration()
 
 @app.route('/get_info/<hostname>', methods=['POST'])
 def get_ports_info(hostname):
-    if request.form['token'] == '12345':
+    if request.form['token'] == conf_obj.secret_token:
         ports_info = Connectlist.query.filter_by(hostname=hostname).first()
         if ports_info is None:
             add_new_host(hostname)

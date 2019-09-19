@@ -13,6 +13,7 @@ Environment="SERVICE_USER=service_user"
 Environment="REMOTE_HOST=www.acme.com"
 Environment="API_TOKEN=0.0.0.0"
 ExecStart=python3 main.py
+ExecStop=/bin/kill -9 $MAINPID
 
 [Install]
 WantedBy=multi-user.target

@@ -13,6 +13,7 @@ Environment="POSTGRES_ADDRESS=127.0.0.1"
 Environment="POSTGERS_PORT=5432"
 Environment="POSTGRES_DATABASE=database"
 ExecStart=/srv/flask_app/api-service/venv/bin/gunicorn --chdir /srv/flask_app/api-service/app --error-logfile /var/log/yaica/api-error.log --access-logfile /var/log/yaica/api-access.log  --bind 127.1:9999  main:app
+ExecStop=/bin/kill -9 $MAINPID
 
 [Install]
 WantedBy=multi-user.target
