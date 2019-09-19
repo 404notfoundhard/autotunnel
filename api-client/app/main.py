@@ -13,7 +13,6 @@ my_template = env.get_template('AutoSSH.service.j2')
 ports_find_regex = re.compile(r'([0-9]{5}(?=:localhost:22)'
                               r'|[0-9]{5}(?=:localhost:3306)'
                               r'|[0-9]{5}(?=:localhost:4000))')
-# temaplate
 
 
 def render_autossh_unit(ssh_port_R, db_port_R, vnc_port_R):
@@ -31,14 +30,12 @@ def daemonReload():
     cmd = ['systemctl', 'daemon-reload']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
-    print('Stdout: %s\nStderr: %s' % stdout, stderr)
 
 
 def unitCommunicate(action):
     cmd = ['systemctl', action, 'AutoSSH.service']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
-    print('Stdout: %s\nStderr: %s' % stdout, stderr)
 
 
 if __name__ == "__main__":
@@ -63,8 +60,8 @@ if __name__ == "__main__":
 
         if (
                 (autossh_ports[0] != r.json()['ssh_port'])
-                and (autossh_ports[1] != r.json()['db_port'])
-                and (autossh_ports[2] != r.json()['vnc_port'])
+                or (autossh_ports[1] != r.json()['db_port'])
+                or (autossh_ports[2] != r.json()['vnc_port'])
            ):
             render_autossh_unit(r.json()['ssh_port'],
                                 r.json()['db_port'],

@@ -1,7 +1,6 @@
 from os import environ
 
 
-
 class Configuration(object):
     # DEBUG = True
     SQLALCHEMY_DATABASE_URI = ('postgres+psycopg2://'
@@ -11,4 +10,4 @@ class Configuration(object):
                                + environ['POSTGERS_PORT'] + '/'
                                + environ['POSTGRES_DATABASE'])
     secret_token = environ['SECRET_TOKEN']
-    # SERVER_NAME = "10.10.10.1:9999"
+    SERVER_NAME = "10.10.10.1:9999"
