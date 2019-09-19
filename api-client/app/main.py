@@ -11,7 +11,9 @@ env = Environment(loader=loader)
 my_template = env.get_template('AutoSSH.service.j2')
 hostname = os.uname()[1]
 token = {'token': '12345'}
-ports_find_regex = re.compile(r'([0-9]{5}(?=:localhost:22)|[0-9]{5}(?=:localhost:3306)|[0-9]{5}(?=:localhost:4000))')
+ports_find_regex = re.compile(r'([0-9]{5}(?=:localhost:22)'
+                              r'|[0-9]{5}(?=:localhost:3306)'
+                              r'|[0-9]{5}(?=:localhost:4000))')
 # temaplate
 data = {'R_ssh_port': None, 'R_mysql_port': None, 'R_vnc_port': None}
 
