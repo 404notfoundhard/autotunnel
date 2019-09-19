@@ -1,0 +1,11 @@
+[Unit]
+Description=Api client, make ssh tunnel 2 remote server
+After=network.target
+
+[Service]
+WorkingDirectory=/srv/api-client/app
+Environment="PATH=/srv/api-client/venv/bin"
+ExecStart=python3 main.py
+
+[Install]
+WantedBy=multi-user.target

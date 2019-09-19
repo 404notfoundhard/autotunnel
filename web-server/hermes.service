@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn instance to serve main flask app
+After=network.target
+
+[Service]
+User=flask
+Group=flask
+WorkingDirectory=/srv/flask_app/web-server
+Environment="PATH=/srv/flask_app/web-server/venv/bin"
+Environment="POSTGRES_LOGIN=login"
+Environment="POSTGRES_PASSWORD=password"
+Environment="POSTGRES_ADDRESS=127.0.0.1"
+Environment="POSTGERS_PORT=5432"
+Environment="POSTGRES_DATABASE=database"
+Environment="SECRET_KEY=secret"
+ExecStart=/srv/flask_app/web-server/venv/bin/gunicorn --chdir /srv/flask_app/web-server/app --error-logfile /var/log/yaica/web-error.log --access-logfile /var/log/yaica/web-access.log  --bind 127.1:8082  main:app
+
+[Install]
+WantedBy=multi-user.target
