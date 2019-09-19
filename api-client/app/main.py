@@ -1,16 +1,15 @@
 import requests
 import time
-import os
 import re
 import subprocess
+from config import ConfigurationObj
 from jinja2 import Environment, FileSystemLoader
 
 
+conf_obj = ConfigurationObj()
 loader = FileSystemLoader('template')
 env = Environment(loader=loader)
 my_template = env.get_template('AutoSSH.service.j2')
-hostname = os.uname()[1]
-token = {'token': '12345'}
 ports_find_regex = re.compile(r'([0-9]{5}(?=:localhost:22)'
                               r'|[0-9]{5}(?=:localhost:3306)'
                               r'|[0-9]{5}(?=:localhost:4000))')
@@ -44,12 +43,14 @@ def unitCommunicate(action):
 
 if __name__ == "__main__":
     while True:
-        r = requests.post('http://10.10.10.1:9999/get_info/'+hostname, data=token)
+        r = requests.post(conf_obj.api_url, data=conf_obj.token)
         try:
-            with open('test_output.txt', 'r') as file:
+            with open('/etc/systemd/system/AutoSSH.service', 'r') as file:
                 service_autossh_raw = file.read()
         except:
-            recreate_autossh_unit(r.json()['ssh_port'], r.json()['db_port'], r.json()['vnc_port'])
+            recreate_autossh_unit(r.json()['ssh_port'],
+                                  r.json()['db_port'],
+                                  r.json()['vnc_port'])
             daemonReload()
             unitCommunicate('enable')
             unitCommunicate('start')
@@ -61,7 +62,9 @@ if __name__ == "__main__":
                 break
 
         if (autossh_ports[0] != r.json()['ssh_port']) and (autossh_ports[1] != r.json()['db_port']) and (autossh_ports[2] != r.json()['vnc_port']):
-            recreate_autossh_unit(r.json()['ssh_port'], r.json()['db_port'], r.json()['vnc_port'])
+            recreate_autossh_unit(r.json()['ssh_port'],
+                                  r.json()['db_port'],
+                                  r.json()['vnc_port'])
             daemonReload()
             unitCommunicate('restart')
 
