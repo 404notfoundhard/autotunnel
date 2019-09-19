@@ -17,3 +17,4 @@ ExecStart=/srv/flask_app/web-server/venv/bin/gunicorn --chdir /srv/flask_app/web
 
 [Install]
 WantedBy=multi-user.target
+
