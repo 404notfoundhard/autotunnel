@@ -5,6 +5,13 @@ After=network.target
 [Service]
 WorkingDirectory=/srv/api-client/app
 Environment="PATH=/srv/api-client/venv/bin"
+Environment="API_HOST=0.0.0.0"
+Environment="API_PORT=0.0.0.0"
+Environment="API_TOKEN=0.0.0.0"
+Environment="PATH_SSH_KEY=/root/private/key"
+Environment="SERVICE_USER=service_user"
+Environment="REMOTE_HOST=www.acme.com"
+Environment="API_TOKEN=0.0.0.0"
 ExecStart=python3 main.py
 
 [Install]
