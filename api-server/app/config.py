@@ -10,4 +10,3 @@ class Configuration(object):
                                + environ['POSTGERS_PORT'] + '/'
                                + environ['POSTGRES_DATABASE'])
     secret_token = environ['SECRET_TOKEN']
-    SERVER_NAME = "10.10.10.1:9999"

@@ -7,8 +7,11 @@ class ConfigurationObj(object):
     __local_hostname = uname()[1]
     __path_ssh_key = environ['PATH_SSH_KEY']
     __service_user = environ['SERVICE_USER']
-    __remote_host = environ['REMOTE_HOST']
-
+    __remote_host = environ['HOST_FOR_SSH_CONNECT']
+    try:
+        __path_for_reverse_proxy = environ['REVERSE_PROXY_PATH']
+    except KeyError:
+        __path_for_reverse_proxy = ''
     data = {'R_ssh_port': None,
             'R_mysql_port': None,
             'R_vnc_port': None,
@@ -18,6 +21,7 @@ class ConfigurationObj(object):
 
     api_url = ('http://'
                + __api_host+':'+__api_port
+               + __path_for_reverse_proxy
                + '/get_info/'
                + __local_hostname)
 
