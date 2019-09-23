@@ -1,0 +1,8 @@
+---
+# defaults file for add-hephaestus-service
+api_host: "10.10.10.1"
+api_port: "9999"
+api_token: "12345"
+ssh_key_path: "/root/.ssh/key"
+service_user: "test_user"
+host_for_ssh_connect: "10.10.10.1"

@@ -1,0 +1,7 @@
+---
+- name: add api-client
+  hosts: all
+  # gather_facts: false
+  become: yes
+  roles:
+  - add-hephaestus-service
