@@ -5,14 +5,14 @@ After=network.target
 [Service]
 User=api-server
 Group=api-server
-WorkingDirectory=/srv/flask_app/api-server
-Environment="PATH=/srv/flask_app/api-server/venv/bin"
+WorkingDirectory=/srv/api-server
+Environment="PATH=/srv/api-server/venv/bin"
 Environment="POSTGRES_LOGIN=login"
 Environment="POSTGRES_PASSWORD=password"
 Environment="POSTGRES_ADDRESS=127.0.0.1"
 Environment="POSTGERS_PORT=5432"
 Environment="POSTGRES_DATABASE=database"
-ExecStart=/srv/flask_app/api-server/venv/bin/gunicorn --chdir /srv/flask_app/api-server/app --error-logfile /var/log/yaica/api-error.log --access-logfile /var/log/yaica/api-access.log  --bind 127.1:9999  main:app
+ExecStart=/srv/api-server/venv/bin/gunicorn --chdir /srv/flask_app/api-server/app --error-logfile /var/log/yaica/api-error.log --access-logfile /var/log/yaica/api-access.log  --bind 127.1:9999  main:app
 ExecStop=/bin/kill -9 $MAINPID
 
 [Install]
