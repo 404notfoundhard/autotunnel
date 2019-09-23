@@ -14,4 +14,6 @@ def get_ports_info(hostname):
             return connect_list.jsonify(ports_info)
         ports_info.last_connect_time = str(datetime.utcnow())
         db.session.commit()
-    return connect_list.jsonify(ports_info)
+        return connect_list.jsonify(ports_info)
+    else:
+        return exit(-1)

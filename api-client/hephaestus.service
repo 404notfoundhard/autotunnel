@@ -6,7 +6,8 @@ After=network.target
 WorkingDirectory=/srv/api-client/app
 Environment="PATH=/srv/api-client/venv/bin:/bin"
 Environment="API_HOST=0.0.0.0"
-Environment="API_PORT=80"
+Environment="API_PORT=443"
+Environment="API_PROTO=https"
 Environment="API_TOKEN=12345"
 Environment="PATH_SSH_KEY=/root/private/key"
 Environment="SERVICE_USER=service_user"

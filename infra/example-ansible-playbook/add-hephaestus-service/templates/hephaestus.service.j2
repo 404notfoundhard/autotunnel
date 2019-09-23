@@ -11,6 +11,7 @@ Environment="API_TOKEN={{api_token}}"
 Environment="PATH_SSH_KEY={{ssh_key_path}}"
 Environment="SERVICE_USER={{service_user}}"
 Environment="HOST_FOR_SSH_CONNECT={{host_for_ssh_connect}}"
+Environment="REVERSE_PROXY_PATH={{reverse_proxy_path}}"
 ExecStart=/srv/api-client/venv/bin/python3 main.py
 ExecStop=/bin/kill -9 $MAINPID
 
