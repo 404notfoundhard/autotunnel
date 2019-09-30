@@ -59,9 +59,9 @@ if __name__ == "__main__":
                 break
 
         if (
-                (autossh_ports[0] != r.json()['ssh_port'])
-                or (autossh_ports[1] != r.json()['db_port'])
-                or (autossh_ports[2] != r.json()['vnc_port'])
+                (int(autossh_ports[0]) != r.json()['ssh_port'])
+                or (int(autossh_ports[1]) != r.json()['db_port'])
+                or (int(autossh_ports[2]) != r.json()['vnc_port'])
            ):
             render_autossh_unit(r.json()['ssh_port'],
                                 r.json()['db_port'],
