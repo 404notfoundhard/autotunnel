@@ -39,8 +39,21 @@ def unitCommunicate(action):
 
 
 if __name__ == "__main__":
+    time_out_retry_connect = 0
     while True:
-        r = requests.post(conf_obj.api_url, data=conf_obj.token)
+        while True:
+            try:
+                r = requests.post(conf_obj.api_url, data=conf_obj.token)
+            except Exception as request_conn_err:
+                time_out_retry_connect += 5
+                with open('/var/log/yaica/api-cli.log', 'a') as api_log:
+                    api_log.write(request_conn_err)
+                    api_log.write('\nnext connection after '
+                                  + str(time_out_retry_connect))
+                    api_log.write('--------------------------')
+                time.sleep(time_out_retry_connect)
+            else:
+                break
         try:
             with open('/etc/systemd/system/AutoSSH.service', 'r') as file:
                 service_autossh_raw = file.read()
