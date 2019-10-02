@@ -1,10 +1,10 @@
 import requests
 import time
 import re
+import os
 import subprocess
 from config import ConfigurationObj
 from jinja2 import Environment, FileSystemLoader
-
 
 conf_obj = ConfigurationObj()
 loader = FileSystemLoader('template')
@@ -40,6 +40,9 @@ def unitCommunicate(action):
 
 if __name__ == "__main__":
     time_out_retry_connect = 0
+    if not os.path.exists('/var/log/yaica/'):
+        os.makedirs('/var/log/yaica/')
+
     while True:
         while True:
             try:

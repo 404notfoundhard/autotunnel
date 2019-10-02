@@ -10,3 +10,4 @@ class Configuration(object):
                                + environ['POSTGERS_PORT'] + '/'
                                + environ['POSTGRES_DATABASE'])
     secret_token = environ['SECRET_TOKEN']
+    remote_host = environ['HOST_FOR_SSH_CONNECT']
