@@ -1,0 +1,104 @@
+version: '3.7'
+services:
+  web-service:
+    build: ../web-server
+    ports:
+      - "8081:8081"
+    environment:
+      - 'POSTGRES_LOGIN=postgres'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_ADDRESS=postgres_db'
+      - 'POSTGERS_PORT=5432'
+      - 'POSTGRES_DATABASE=my_bd'
+      - 'SECRET_KEY=CSRFsecret'
+      - 'SERVICE_USER=service_user'
+      - 'HOST_FOR_SSH_CONNECT=172.16.99.1'
+    depends_on:
+      - postgresbd
+    networks:
+      database_net:
+      main_net:
+        aliases:
+          - web-service
+
+  api-service:
+    build: ../api-server
+    environment:
+      - 'POSTGRES_LOGIN=postgres'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_ADDRESS=172.16.98.4'
+      - 'POSTGERS_PORT=5432'
+      - 'POSTGRES_DATABASE=my_bd'
+      - 'SECRET_TOKEN=12345_secret'
+    depends_on:
+      - postgresbd
+      - web-service
+    network_mode: 
+      host
+    # networks:
+    #   database_net:
+    #   main_net:
+    #     aliases:
+    #       - api-service
+
+
+  api-client:
+    build: ../api-client
+    environment:
+      # - 'PATH=/bin:/sbin'
+      - 'API_HOST=172.16.99.1'
+      - 'API_PORT=9999'
+      - 'API_PROTO=http'
+      - 'API_TOKEN=12345_secret'
+      - 'PATH_SSH_KEY=/root/id_rsa'
+      - 'SERVICE_USER=service_user'
+      - 'HOST_FOR_SSH_CONNECT=172.16.99.1'
+    depends_on:
+      - api-service
+    # deploy:
+      # replicas: 3
+    networks:
+      main_net:
+        aliases:
+          - api-client
+
+
+  postgresbd:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_bd:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=my_bd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    networks:
+      database_net:
+        ipv4_address: 172.16.98.4
+        aliases:
+          - postgres_db
+  adminer:
+    image: adminer:latest
+    depends_on: 
+      - postgresbd
+    ports:
+      - 80:8080
+    networks:
+      database_net:
+        # ipv4_address: 172.16.99.2
+
+volumes:
+  postgres_bd:
+
+networks:
+  database_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.98.0/24
+  main_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.99.0/24
