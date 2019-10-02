@@ -91,7 +91,7 @@ def add_new_host(hostname):
                           ssh_port=ssh_port,
                           db_port=db_port,
                           vnc_port=vnc_port,
-                          server='monit.tru.io',
+                          server=Configuration.remote_host,
                           last_connect_time=str(datetime.utcnow()))
     new_usr.hostname = hostname
     db.session.add(new_usr)
