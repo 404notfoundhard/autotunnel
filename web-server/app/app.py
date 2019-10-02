@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
-
+custom_conf = Configuration()
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
@@ -24,6 +24,8 @@ def hosts_info(all_info):
         host_status['db_port'] = info['db_port']
         host_status['vnc_port'] = info['vnc_port']
         host_status['time_check'] = info['last_connect_time'][:-7]
+        host_status['remote_user'] = custom_conf.render_service_user
+        host_status['remote_host'] = custom_conf.render_host
         hosts_status.append(host_status)
 
     sorted_hosts_status = sorted(
