@@ -8,6 +8,7 @@ And im tired manually setup port for ssh tunnel for this servers.
 Where i should store ports for reverse connection and monitor the condition of the tunnels?  
 I decided to write this small project
 
+
 #### Install:
 web:
 1) Install postgresql
@@ -20,6 +21,7 @@ web:
 5) reload systemctl and start service
 
 or use ansible playbook [install web-server](infra/example-ansible-playbook) :)
+
 
 #### TL;DR
 
@@ -78,8 +80,10 @@ POSTGRES_DATABASE=my_bd
 POSTGRES_ADDRESS=127.0.0.1
 POSTGERS_PORT=5436
 SECRET_TOKEN=secret_token_for_api_auth_in_api
+<<<<<<< HEAD
 HOST_FOR_SSH_CONNECT=remotehost.loc
 ```
+
 
 #### api-client
 Generates a unit file and monitors changes on the server. If the ports for some reason will be changed in the database, it will form a new unit file and restart autossh service
