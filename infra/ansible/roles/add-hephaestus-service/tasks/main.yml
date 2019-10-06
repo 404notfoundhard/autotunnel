@@ -1,0 +1,71 @@
+---
+# tasks file for add-hephaestus-service
+- name: install required packages
+  apt:
+    name: "{{ required_packages }}"
+    update_cache: yes
+  ignore_errors: True
+  register: python36_notfound
+
+- name: add python3.6 repo if install failed
+  apt_repository:
+    repo: ppa:deadsnakes/ppa
+    update_cache: yes
+  when: python36_notfound != 0
+  register: python36_repo_add
+
+- name: install required packages when add repository
+  apt:
+    name: "{{ required_packages }}"
+    update_cache: yes
+  when: python36_repo_add is succeeded
+
+- name: get src from git
+  git:
+    repo: https://github.com/404notfoundhard/autotunnel.git
+    dest: /tmp/ansible-tmp/autotunnel/
+    # archive: /tmp/autotunnel.zip
+
+- name: dev locale
+  action: command sudo update-locale LC_ALL=en_US.UTF-8
+
+- name: set default locale
+  lineinfile: dest=/etc/default/locale
+    regexp="LC_ALL"
+    line="LC_ALL=\"en_US.UTF-8\""
+
+- name: Copy src api-server
+  copy:
+    src: /tmp/ansible-tmp/autotunnel/api-client/
+    dest: /srv/api-client
+    mode: u=rw,g=r
+    remote_src: yes
+
+- name: Install virtualenv via pip
+  pip:
+    name: "{{ pip_packages }}"
+    executable: pip3
+
+- name: create python virtual environment and install requirements
+  pip:
+     requirements: /srv/api-client/requirements.txt
+     virtualenv: /srv/api-client/venv
+     virtualenv_python: python3.6
+
+- name: copy private key
+  no_log: true
+  copy:
+    src: ./ssh_tunnel_key
+    dest: "{{ ssh_pkey_remote_path }}"
+    owner: root
+    group: root
+    mode: '400'
+
+- name: copy hephaestus.service
+  template:
+    dest: /etc/systemd/system/hephaestus.service
+    src: hephaestus.service.j2
+    owner: root
+    group: root
+  notify:
+  - Restart hephaestus and reload daemon

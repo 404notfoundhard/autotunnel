@@ -1,0 +1,12 @@
+---
+# defaults file for add-hermes-service
+database_login: 
+database_password:
+database_addres:
+database_port:
+database_name:
+secret_CSRF:
+bastion_host:
+bastion_user:
+web_log_path:
+web_server_src:

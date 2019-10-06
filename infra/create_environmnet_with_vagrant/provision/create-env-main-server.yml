@@ -1,0 +1,69 @@
+---
+- name: Check and install python
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    # - name: change repo to mirror
+    #   raw: sed -i -e 's/http:\/\/us.archive/mirror:\/\/mirrors/' -e 's/\/ubuntu\//\/mirrors.txt/' /etc/apt/sources.list
+
+    - name: install python for ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: False
+    - name: add user
+      user:
+        # password: qwe
+        name: service_user
+        password: $6$8oiO7wqR$f7mdW3zlft94PWHXwTDl4dirWZWbEbw.k0O0joA.v2RzGDxNSKpG5AaTY2rlhDzcBCfyL5ELTBc9bec/2FVG.1
+        shell: /bin/bash
+        createhome: yes
+
+    - name: change ssh
+      shell: "sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config"
+
+    - name: Restart ssh
+      shell: sleep 3; systemctl restart ssh
+      async: 1
+      poll: 0
+    
+    - name: install postgres server
+      apt:
+        name: postgresql
+        update_cache: yes
+    
+    - name: copy zeus service
+      template:
+        src: templates/AutoSSH.service.j2
+        dest: /etc/systemd/system/AutoSSH.service
+        owner: root
+        group: root
+      notify:
+      - Reload systemctl daemon
+      - Start zeus
+
+    - name: copy hermes service 
+      template:
+        src: templates/AutoSSH.service.j2
+        dest: /etc/systemd/system/AutoSSH.service
+        owner: root
+        group: root
+      notify:
+      - Reload systemctl daemon
+      - Start hermes
+  
+  
+  
+  handlers:
+    - name: Reload systemctl daemon
+      systemd: 
+        daemon_reload: yes
+    
+    - name: Start zeus
+      systemd:
+        state: started
+        name: zeus
+
+    - name: Start hermes
+      systemd:
+        state: started
+        name: hermes

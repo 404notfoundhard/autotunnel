@@ -1,0 +1,32 @@
+---
+- name: install postgres
+  hosts: postgres
+  vars_files:
+  - ./vars.yml
+  become: yes
+  roles:
+  - bearandgiraffe.postgresql
+
+- name: install web-service
+  hosts: webServer
+  vars_files:
+    - ./vars.yml
+  become: yes
+  roles:
+    - add-hermes-service
+
+- name: install api-service
+  hosts: apiServer
+  become: yes
+  vars_files:
+    - ./vars.yml
+  roles:
+  - add-zeus-service
+
+- name: spread api-client
+  hosts: clients
+  become: yes
+  vars_files:
+    - ./vars.yml
+  roles:
+  - add-hephaestus-service

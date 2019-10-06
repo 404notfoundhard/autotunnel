@@ -1,0 +1,15 @@
+---
+# defaults file for add-zeus-service
+secret_token:
+api_log_path:
+api_server_port:
+api_server_src:
+database_login:
+database_password:
+database_addres:
+database_port:
+database_name:
+bastion_host:
+bastion_user:
+api_server_user:
+api_server_userpass:
