@@ -1,0 +1,33 @@
+---
+- name: Configure the PostgreSQL APT key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+
+- name: Configure the PostgreSQL APT repositories
+  apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ {{  ansible_distribution_release }}-pgdg main" state=present
+
+- name: Update APT package cache
+  apt: update_cache=yes
+
+- name: Install packages
+  apt: name={{ item }}
+  with_items:
+    - libpq-dev
+    - 'postgresql-{{postgresql_version}}'
+    - 'postgresql-contrib-{{postgresql_version}}'
+    - python-pip
+    - python-dev
+
+- name: Configure PostgreSQL - postgresql.conf
+  template: src=postgresql.conf.j2 dest='/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf'
+  notify: restart postgresql
+
+- name: Configure PostgreSQL - pg_hba.conf
+  template: src=pg_hba.conf.j2 dest='/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf'
+  notify: restart postgresql
+
+- name: Install required Python modules
+  pip: name=psycopg2
+
+- include: 10-users.yml
+- include: 20-databases.yml
+- include: 30-extensions.yml

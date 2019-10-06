@@ -1,0 +1,14 @@
+---
+- name: PostgreSQL | Extensions | Make sure the postgis extensions are installed
+  apt:
+    name:         "{{ item }}"
+    state:        present
+    update_cache: yes
+  become: true
+  with_items:
+    - libgeos-dev
+    - libgeos-c1v5
+    - postgis
+    - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}"
+    - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}-scripts"
+  notify: restart postgresql

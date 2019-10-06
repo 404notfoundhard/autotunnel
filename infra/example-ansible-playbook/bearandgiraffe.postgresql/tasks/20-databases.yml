@@ -1,0 +1,18 @@
+---
+- name: PostgreSQL | Make sure the PostgreSQL databases are present
+  postgresql_db:
+    name:         "{{ item }}"
+    owner:        "{{ postgresql_db_owner | default(postgresql_admin_user) }}"
+    encoding:     "{{ postgresql_encoding }}"
+    lc_collate:   "{{ postgresql_locale }}"
+    lc_ctype:     "{{ postgresql_locale }}"
+    port:         "{{ postgresql_port }}"
+    template:     "template0"
+    state:        present
+    login_user:   "{{ postgresql_admin_user }}"
+  become:       yes
+  become_user:  "{{ postgresql_admin_user }}"
+  with_items:
+    - "{{ postgresql_db_name }}"
+    - "{{ postgresql_db_name }}_develoment"
+    - "{{ postgresql_db_name }}_test"

@@ -31,18 +31,8 @@
 
 - name: install python3.6 and python3.6-venv
   apt:
-    name: "{{ packages }}"
+    name: "{{ required_packages }}"
     update_cache: yes
-  vars:
-    packages:
-    - python3.6
-    - python3-pip
-    - python3-venv
-    - python3.6-venv
-    - python3-setuptools
-    - python-setuptools
-    - sshpass
-    - autossh
   ignore_errors: True
   register: python36_notfound
 
@@ -55,45 +45,25 @@
 
 - name: install python3.6 and python3.6-venv when add repository
   apt:
-    name: "{{ packages }}"
+    name: "{{ required_packages }}"
     update_cache: yes
   when: python36_repo_add is succeeded
-  vars:
-    packages:
-    - python-setuptools
-    - python3.6
-    - python3-pip
-    - python3.6-venv
-    - python3-venv
-    - python3-setuptools
-    - sshpass
-    - autossh
 
 - name: Install virtualenv via pip
   pip:
-    name: "{{pip_packages}}"
+    name: "{{ pip_packages }}"
     executable: pip3
-  vars:
-    pip_packages:
-    - virtualenv
-    - setuptools
 
 - name: create python virtual environment and install requirements
   pip:
-    #  virtualenv_command: /usr/bin/python3.6 -m /srv/api-client/venv
      requirements: /srv/api-client/requirements.txt
      virtualenv: /srv/api-client/venv
      virtualenv_python: python3.6
 
-- name: create ssh-key
-  openssh_keypair:
-    # force: yes
-    owner: root
-    path: /root/.ssh/key
-    # size: 2048
-
-# - name: call ssh-copy-id
-#   command: sshpass -p test_pass ssh-copy-id -i /root/.ssh/key.pub -o StrictHostKeyChecking=no test_user@10.10.10.1
+# - name: create ssh-key
+#   openssh_keypair:
+#     owner: root
+#     path: /root/.ssh/key
 
 - name: copy hephaestus.service
   template:
