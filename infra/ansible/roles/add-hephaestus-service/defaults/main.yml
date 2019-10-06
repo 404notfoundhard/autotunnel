@@ -1,0 +1,11 @@
+---
+# defaults file for add-hephaestus-service
+api_client_src:
+api_proto:
+api_host:
+api_port:
+api_token:
+ssh_key_path:
+bastion_user:
+bastion_host:
+reverse_proxy_path:

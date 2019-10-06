@@ -1,0 +1,23 @@
+[Unit]
+Description=Gunicorn instance to serve main flask app
+After=network.target
+
+[Service]
+# User=flask
+# Group=flask
+WorkingDirectory=/srv/web-server
+Environment="PATH=/srv/web-server/venv/bin"
+Environment="POSTGRES_LOGIN={{ database_login }}"
+Environment="POSTGRES_PASSWORD={{ database_password }}"
+Environment="POSTGRES_ADDRESS={{ database_addres }}"
+Environment="POSTGERS_PORT={{ database_port | default(5432) }}"
+Environment="POSTGRES_DATABASE={{ database_name }}"
+Environment="SECRET_KEY={{ secret_CSRF }}"
+Environment="HOST_FOR_SSH_CONNECT={{ bastion_host }}"
+Environment="SERVICE_USER={{ bastion_user }}"
+ExecStart=/srv/web-server/venv/bin/gunicorn --chdir /srv/web-server/app --error-logfile {{ web_log_path }}web-error.log --access-logfile {{ web_log_path }}web-access.log  --bind 0.0.0.0:{{web_server_port}}  main:app
+ExecStop=/bin/kill -9 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+

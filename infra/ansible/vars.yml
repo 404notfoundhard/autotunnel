@@ -1,0 +1,59 @@
+########################################################################################
+# general environment vars
+########################################################################################
+database_login:                 test_login
+database_password:              test_password
+database_addres:                "{{ hostvars['serverdb'].ansible_host }}"
+database_port:                  "5432"
+database_name:                  test_database
+bastion_host:                   "{{ hostvars['serverapi'].ansible_host }}"
+bastion_user:                   "service_user"
+ssh_pkey_remote_path:           "/opt/ssh_service_key"
+ssh_pkey_local_path:            "./ssh_tunnel_key"
+ssh_pubkey_local_path:          "./ssh_tunnel_key.pub"
+########################################################################################
+# web-server environment        
+########################################################################################
+secret_CSRF:                    "test"
+web_log_path:                    "/var/log/web-server/"
+web_server_port:                "8082"
+########################################################################################
+# api-server environment
+########################################################################################
+secret_token:                   "12345"
+api_log_path:                   "/var/log/api-server/"
+api_server_port:                "9999"
+api_server_src:                 "./autotunnel/api-server/"
+api_server_user:                "api-server" #run api server on this user
+api_server_userpass:            "test" #use ansible-vault!
+########################################################################################
+# api-client environment
+########################################################################################
+api_proto:                      "http"
+api_port:                       "{{api_server_port}}"
+api_host:                       "{{ hostvars['serverapi'].ansible_host }}"
+api_token:                      "{{secret_token}}"
+#reverse_proxy_path:
+########################################################################################
+# add postgres
+########################################################################################
+postgresql_admin_user:          postgres
+postgresql_version:             9.5
+postgresql_ext_postgis_version: 2.2
+postgresql_port:                "{{database_port}}"
+postgresql_db_name:             "{{database_name}}"
+postgresql_db_owner:            "{{database_login}}"
+postgresql_db_password:         "{{database_password}}"
+
+postgresql_encoding: 'UTF-8'
+postgresql_locale_parts:
+  - 'en_US' # Locale
+  - 'UTF-8' # Encoding
+postgresql_locale: "{{ postgresql_locale_parts | join('.') }}"
+
+postgresql_extensions:
+  - hstore
+  - postgis
+
+postgresql_users:
+  - { username: '{{ postgresql_db_owner }}', password: '{{ postgresql_db_password }}' }

@@ -1,0 +1,35 @@
+---
+  webServer:
+    hosts:
+      serverweb:
+        ansible_host: 10.10.10.90
+        ansible_user: service_user
+        ansible_become_pass: qwe
+        ansible_password: qwe
+  apiServer:
+    hosts:
+      serverapi:
+        ansible_host: 10.10.10.91
+        ansible_user: service_user
+        ansible_become_pass: qwe
+        ansible_password: qwe
+  postgres:
+    hosts:
+      serverdb:
+        ansible_host: 10.10.10.92
+        ansible_user: service_user
+        ansible_become_pass: qwe
+        ansible_password: qwe
+
+  clients:
+    hosts:
+      server2:
+        ansible_host: 10.10.10.2
+        ansible_user: service_user
+        ansible_become_pass: qwe
+        ansible_password: qwe
+      server3:
+        ansible_host: 10.10.10.3
+        ansible_user: service_user
+        ansible_become_pass: qwe
+        ansible_password: qwe

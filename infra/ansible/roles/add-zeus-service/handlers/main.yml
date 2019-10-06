@@ -1,0 +1,11 @@
+---
+# handlers file for add-zeus-service
+- name: Reload systemctl daemon
+  systemd: 
+    daemon_reload: yes
+
+- name: Reload daemon and restart zeus.service
+  systemd:
+    daemon_reload: yes
+    name: zeus
+    state: restarted
