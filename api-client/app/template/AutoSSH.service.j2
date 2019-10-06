@@ -8,7 +8,7 @@ Environment="AUTOSSH_GATETIME=0"
 Environment="AUTOSSH_PIDFILE=/var/run/autossh.pid"
 Environment="AUTOSSH_LOGFILE=/var/log/autossh.log"
 PIDFile=/var/run/autossh.pid
-ExecStart=/usr/bin/autossh -N  -R {{ data.R_ssh_port }}:localhost:22 -R {{ data.R_mysql_port }}:localhost:3306 -R {{ data.R_vnc_port }}:localhost:4000 {{ data.service_user }}@{{ data.remote_host }} -i {{ data.path_ssh_key }}
+ExecStart=/usr/bin/autossh -N -o StrictHostKeyChecking=no  -o UserKnownHostsFile=/dev/null -R {{ data.R_ssh_port }}:localhost:22 -R {{ data.R_mysql_port }}:localhost:3306 -R {{ data.R_vnc_port }}:localhost:4000 {{ data.service_user }}@{{ data.remote_host }} -i {{ data.path_ssh_key }}
 ExecStop=/bin/kill -9 $MAINPID
 Restart=always
 

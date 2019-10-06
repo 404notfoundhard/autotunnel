@@ -12,6 +12,7 @@ Environment="API_TOKEN=12345"
 Environment="PATH_SSH_KEY=/root/private/key"
 Environment="SERVICE_USER=service_user"
 Environment="HOST_FOR_SSH_CONNECT=www.acme.com"
+Environment="REVERSE_PROXY_PATH=/path-for-api-server/" #null by default, extra var
 ExecStart=/srv/api-client/venv/bin/python3 main.py
 ExecStop=/bin/kill -9 $MAINPID
 

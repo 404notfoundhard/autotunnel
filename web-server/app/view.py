@@ -1,3 +1,4 @@
+import psycopg2
 from app import app, ConnectlistSchema, Connectlist, db, hosts_info
 from flask import render_template, redirect  # , flash, request,
 # from wtforms import Form, TextField, TextAreaField, validators, StringField
@@ -26,12 +27,20 @@ def delete_host(id):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    all_info = connect_lists.dump(Connectlist.query.all())[0]
-    hosts_status = hosts_info(all_info)  # output is list
-    return render_template('index.html',
-                           all_info=all_info,
-                           hosts_status=hosts_status
-                           )
+    try:
+        all_info = connect_lists.dump(Connectlist.query.all())[0]
+        hosts_status = hosts_info(all_info)  # output is list
+        return render_template('index.html',
+                               all_info=all_info,
+                               hosts_status=hosts_status
+                               )
+    except Exception as err:  # i don't know how fucking handle this =\
+        err_raw = str(err).split('\n')
+        if 'UndefinedTable' in err_raw[0]:
+            db.create_all()
+        return redirect('/')
+
+
 
 
 @app.route('/login')

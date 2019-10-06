@@ -4,6 +4,7 @@ from config import Configuration
 
 conf_obj = Configuration()
 
+
 @app.route('/get_info/<hostname>', methods=['POST'])
 def get_ports_info(hostname):
     if request.form['token'] == conf_obj.secret_token:

@@ -2,5 +2,5 @@ uwsgi_prod
 venv
 .vscode
 __pycache__
-docker-compose.yml
 test*
+bearandgiraffe.postgresql

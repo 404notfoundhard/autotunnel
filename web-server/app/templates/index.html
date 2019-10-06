@@ -18,11 +18,11 @@ Hello unknown
             - {{ host.hostname }}
           </div>
           <div class="col-sm">
-            <p hidden id='{{ host.index }}'>ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }} service_user@monit.tru.io -i $SKEY_PATH</p>
+            <p hidden id='{{ host.index }}'>ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }} {{ host.remote_user }}@{{ host.remote_host }} -i $SKEY_PATH</p>
             <button onclick="copyToClipboard('{{ host.index }}')" type="button" 
               data-toggle="popover" data-placement="right" data-content="ssh -N -L {{ host.ssh_port }}:127.1:{{ host.ssh_port }} -L
               {{ host.db_port }}:127.1:{{ host.db_port }} -L {{ host.vnc_port }}:127.1:{{ host.vnc_port }}
-              service_user@monit.tru.io -i $SKEY_PATH is COPIED!" class="btn thisispop btn-primary btn-sm badge-pill">Ssh
+              {{ host.remote_user }}@{{ host.remote_host }} -i $SKEY_PATH is COPIED!" class="btn thisispop btn-primary btn-sm badge-pill">copy ssh
               command to clipboard</button>
           </div>
           <div class="col-sm">

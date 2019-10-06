@@ -1,0 +1,11 @@
+---
+# handlers file for add-hermes-service
+- name: Reload systemctl daemon
+  systemd: 
+    daemon_reload: yes
+
+- name: Restart hephaestus and reload daemon
+  systemd:
+    daemon_reload: yes
+    name: hermes
+    state: restarted

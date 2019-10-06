@@ -12,6 +12,8 @@ Environment="POSTGRES_PASSWORD=password"
 Environment="POSTGRES_ADDRESS=127.0.0.1"
 Environment="POSTGERS_PORT=5432"
 Environment="POSTGRES_DATABASE=database"
+Environment="SECRET_TOKEN=secret_token_for_connect_api-cli"
+Environment="HOST_FOR_SSH_CONNECT=sub.example.loc"
 ExecStart=/srv/api-server/venv/bin/gunicorn --chdir /srv/flask_app/api-server/app --error-logfile /var/log/yaica/api-error.log --access-logfile /var/log/yaica/api-access.log  --bind 127.1:9999  main:app
 ExecStop=/bin/kill -9 $MAINPID
 
