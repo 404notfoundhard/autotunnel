@@ -11,7 +11,7 @@ class ConfigurationObj(object):
     try:
         __http_proto = environ['API_PROTO']
     except KeyError:
-        __http_proto = 'https'
+        __http_proto = 'http'
     try:
         __path_for_reverse_proxy = environ['REVERSE_PROXY_PATH']
     except KeyError:

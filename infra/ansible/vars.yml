@@ -1,5 +1,5 @@
 ########################################################################################
-# general environment vars
+# general environment vars   ( don't forget about anible-vault for better security ;) )
 ########################################################################################
 database_login:                 test_login
 database_password:              test_password

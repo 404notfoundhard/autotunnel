@@ -10,4 +10,4 @@ RUN --mount=id=apk,type=cache,target=/var/cache/apk,sharing=locked \
     --mount=id=apk,type=cache,target=/etc/apk/cache/,sharing=locked apk update \
 && apk add openssh-client curl autossh
 
-CMD [ "/bin/sh","/apicli/example-infra/docker-entrypoint.sh" ]
+CMD [ "/bin/sh","/apicli/docker-entrypoint.sh" ]
