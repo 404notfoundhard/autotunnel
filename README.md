@@ -38,7 +38,7 @@ cd infra/ && docker-compose up -d --build
 ```
 
 #### Install:
-Use [ansible playbook](infra/ansible/)
+Use [ansible playbook](infra/ansible/)  
 But first configure [ansible vars](infra/ansible/vars.yml)
 #### TL;DR
 
