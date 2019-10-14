@@ -50,7 +50,7 @@ if __name__ == "__main__":
             except Exception as request_conn_err:
                 time_out_retry_connect += 5
                 with open('/var/log/yaica/api-cli.log', 'a') as api_log:
-                    api_log.write(request_conn_err)
+                    api_log.write(str(request_conn_err))
                     api_log.write('\nnext connection after '
                                   + str(time_out_retry_connect))
                     api_log.write('--------------------------')
