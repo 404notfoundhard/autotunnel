@@ -25,6 +25,9 @@
     repo: https://github.com/404notfoundhard/autotunnel.git
     dest: /tmp/ansible-tmp/autotunnel/
     # archive: /tmp/autotunnel.zip
+  notify:
+  - Restart hephaestus and reload daemon
+
 
 - name: dev locale
   action: command sudo update-locale LC_ALL=en_US.UTF-8

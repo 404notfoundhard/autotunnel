@@ -53,7 +53,7 @@ if __name__ == "__main__":
                     api_log.write(str(request_conn_err))
                     api_log.write('\nnext connection after '
                                   + str(time_out_retry_connect))
-                    api_log.write('--------------------------')
+                    api_log.write('\n--------------------------\n')
                 time.sleep(time_out_retry_connect)
             else:
                 break
