@@ -52,7 +52,8 @@ connect_list = ConnectlistSchema(strict=True)
 
 def find_available_ports():
     # get busy ports from linux
-    connect_lines = open("/proc/net/tcp").readlines()
+    with open('/proc/net/tcp', 'r') as f:
+        connect_lines = f.readlines()
     busy_ports_tcpv = []
     for line in connect_lines[1:]:
         local_hex_socket = line.split()[1].split(':')

@@ -9,3 +9,4 @@
     daemon_reload: yes
     name: hephaestus
     state: restarted
+    enabled: yes
