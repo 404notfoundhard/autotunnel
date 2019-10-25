@@ -1,0 +1,42 @@
+---
+- hosts: clients
+  vars_files:
+    - ./vars.yml
+  gather_facts: false
+  become: true
+  tasks:
+  - name: copy api client
+    copy:
+      src: ../../api-client/app
+      dest: /srv/api-client/
+      force: yes
+      owner: root
+      group: root
+      mode: '0744'
+  
+  - name: restart api-client service
+    systemd:
+      daemon_reload: yes
+      name: hephaestus
+      state: restarted
+
+- hosts: apiServer
+  vars_files:
+    - ./vars.yml
+  gather_facts: false
+  become: true
+  tasks:  
+  - name: copy api server src
+    copy:
+      src: ../../api-server/app
+      dest: /srv/api-server/
+      force: yes
+      owner: "{{api_server_user}}"
+      group: "{{api_server_user}}"
+      mode: '0744'
+  
+  - name: restart api-server
+    systemd:
+      daemon_reload: yes
+      name: zeus
+      state: restarted

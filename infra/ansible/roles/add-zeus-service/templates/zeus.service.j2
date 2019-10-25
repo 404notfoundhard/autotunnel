@@ -3,8 +3,8 @@ Description=Api server on flask
 After=network.target
 
 [Service]
-User=api-server
-Group=api-server
+User={{api_server_user}}
+Group={{api_server_user}}
 WorkingDirectory=/srv/api-server
 Environment="PATH=/srv/api-server/venv/bin"
 Environment="POSTGRES_LOGIN={{database_login}}"

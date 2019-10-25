@@ -9,3 +9,4 @@
     daemon_reload: yes
     name: hermes
     state: restarted
+    enabled: yes

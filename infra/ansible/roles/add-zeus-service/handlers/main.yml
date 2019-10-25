@@ -9,3 +9,4 @@
     daemon_reload: yes
     name: zeus
     state: restarted
+    enabled: yes

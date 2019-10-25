@@ -3,6 +3,7 @@ from config import Configuration
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import psycopg2
+import subprocess
 # import os
 from datetime import datetime
 # from OpenSSL import SSL
@@ -48,6 +49,15 @@ class ConnectlistSchema(ma.Schema):
 
 # Init schema
 connect_list = ConnectlistSchema(strict=True)
+
+
+def kill_socket(ports):
+    # print(ports)
+    cmd = ['ss', '-lpt']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    for i in stdout[0].decode('utf-8').split('\n'):
+        print(i)
 
 
 def find_available_ports():
