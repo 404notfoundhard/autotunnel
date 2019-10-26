@@ -1,6 +1,14 @@
 ---
 # tasks file for add-zeus-service
 
+- name: register ss path
+  shell: 'whereis ss | grep -oE "\ [a-z\/]+ss\ "'
+  register: ss_path
+
+- name: show ss path
+  debug:
+    msg: "ss is in this path: {{ss_path.stdout}}"
+
 - name: install required packages
   apt:
     name: "{{ required_packages }}"
@@ -39,22 +47,23 @@
     dest: /srv/api-server
     owner: "{{api_server_user}}"
     group: "{{api_server_user}}"
-    mode: u=rw,g=r
+    mode: '755'
     remote_src: yes
 
 - name: dev locale
   action: command sudo update-locale LC_ALL=en_US.UTF-8
 
 - name: set default locale
-  lineinfile: dest=/etc/default/locale
-    regexp="LC_ALL"
-    line="LC_ALL=\"en_US.UTF-8\""
+  lineinfile: 
+    dest: /etc/default/locale
+    regexp: "LC_ALL"
+    line: "LC_ALL=\"en_US.UTF-8\""
 
 - name: create log folder
   file:
     path: "{{api_log_path}}"
     owner: "{{api_server_user}}"
-    mode: '766'
+    mode: '755'
     state: directory
 
 - name: Install virtualenv via pip
@@ -98,6 +107,14 @@
     dest: "/home/{{ bastion_user }}/.ssh/authorized_keys"
     line: "{{lookup('file', '{{ssh_pubkey_local_path}}') }}"
   when: find_pub_key.rc != 0 
+
+- name: give permission kill sockets 48*** to {{api_server_user}} 
+  template:
+    dest: /etc/sudoers.d/api-server
+    src: sudousers.j2
+    owner: root
+    group: root
+    mode: '440'
 
 - name: copy zeus.service
   template:

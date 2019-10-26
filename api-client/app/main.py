@@ -15,6 +15,11 @@ ports_find_regex = re.compile(r'([0-9]{5}(?=:localhost:22)'
                               r'|[0-9]{5}(?=:localhost:4000))')
 
 
+def customLogger(txt4w):
+    with open('/var/log/yaica/api-cli.log', 'a') as api_log:
+        api_log.write(txt4w)
+
+
 def render_autossh_unit(ssh_port_R, db_port_R, vnc_port_R):
     conf_obj.data['R_ssh_port'] = ssh_port_R
     conf_obj.data['R_mysql_port'] = db_port_R
@@ -32,30 +37,55 @@ def daemonReload():
     stdout, stderr = proc.communicate()
 
 
-def unitCommunicate(action):
+def autosshCommunicate(action):
     cmd = ['systemctl', action, 'AutoSSH.service']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
+    # customLogger(str(stderr))
+    # customLogger(str(stdout))
 
 
 if __name__ == "__main__":
     time_out_retry_connect = 0
+    reconnection_flag = False
     if not os.path.exists('/var/log/yaica/'):
         os.makedirs('/var/log/yaica/')
 
     while True:
         while True:
             try:
-                r = requests.post(conf_obj.api_url, data=conf_obj.token)
+                conf_obj.token['reconnect_status'] = reconnection_flag
+                r = requests.post(conf_obj.api_url, data=conf_obj.token, timeout=4)
+                # try json decode
+                # test = r.json()['ssh_port']
+                # del test
             except Exception as request_conn_err:
                 time_out_retry_connect += 5
-                with open('/var/log/yaica/api-cli.log', 'a') as api_log:
-                    api_log.write(str(request_conn_err))
-                    api_log.write('\nnext connection after '
-                                  + str(time_out_retry_connect))
-                    api_log.write('\n--------------------------\n')
+                customLogger('[ERROR] Connection failed at [%s]: ' % time.ctime())
+                customLogger(str(request_conn_err)+'\n')
+                customLogger('Next connection after: '
+                             + str(time_out_retry_connect))
+                customLogger('\n--------------------------\n')
+
                 time.sleep(time_out_retry_connect)
+
+                if reconnection_flag is False:
+                    customLogger('Stoping AutoSSH service....\n')
+                    autosshCommunicate('stop')
+                reconnection_flag = True
+
             else:
+                # wait when api-server close socket
+                # prevent "socket alredy used"
+                if reconnection_flag is True:
+                    customLogger('[INFO] Connection restored at [%s]' % time.ctime())
+                    customLogger('\n--------------------------\n')
+                    conf_obj.token['reconnect_status'] = reconnection_flag
+                    time.sleep(5)
+                    customLogger('Starting AutoSSH service....')
+                    autosshCommunicate('start')
+                    reconnection_flag = False
+                time_out_retry_connect = 0
                 break
         try:
             with open('/etc/systemd/system/AutoSSH.service', 'r') as file:
@@ -65,8 +95,8 @@ if __name__ == "__main__":
                                 r.json()['db_port'],
                                 r.json()['vnc_port'])
             daemonReload()
-            unitCommunicate('enable')
-            unitCommunicate('start')
+            autosshCommunicate('enable')
+            autosshCommunicate('start')
 
         service_autossh = service_autossh_raw.split('\n')
         for line in service_autossh:
@@ -83,6 +113,6 @@ if __name__ == "__main__":
                                 r.json()['db_port'],
                                 r.json()['vnc_port'])
             daemonReload()
-            unitCommunicate('restart')
+            autosshCommunicate('restart')
 
         time.sleep(5)

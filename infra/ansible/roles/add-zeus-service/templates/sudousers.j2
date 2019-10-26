@@ -1,0 +1,6 @@
+# Cmnd alias specification
+Cmnd_Alias SS_KILL_SOCKET ={{ss_path.stdout}} --kill state listening src *
+Cmnd_Alias SS_SHOW_PID ={{ss_path.stdout}} -tlnp
+
+# User privileges
+{{api_server_user}} ALL=(ALL) NOPASSWD:SS_SHOW_PID, SS_KILL_SOCKET

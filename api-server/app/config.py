@@ -2,7 +2,8 @@ from os import environ
 
 
 class Configuration(object):
-    DEBUG = True
+    # DEBUG = True
+    # SERVER_NAME = "10.10.10.91:9999"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = ('postgres+psycopg2://'
                                + environ['POSTGRES_LOGIN'] + ':'

@@ -30,4 +30,4 @@ class ConfigurationObj(object):
                + '/get_info/'
                + __local_hostname)
 
-    token = {'token': environ['API_TOKEN']}
+    token = {'token': environ['API_TOKEN'], 'reconnect_status': None}

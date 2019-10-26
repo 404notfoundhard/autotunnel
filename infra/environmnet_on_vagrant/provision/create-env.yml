@@ -1,13 +1,12 @@
 ---
-- name: Check and install python
-  hosts: all
+- hosts: all
   become: true
   gather_facts: false
   tasks:
     # - name: change repo to mirror
     #   raw: sed -i -e 's/http:\/\/us.archive/mirror:\/\/mirrors/' -e 's/\/ubuntu\//\/mirrors.txt/' /etc/apt/sources.list
 
-    - name: install python for ansible
+    - name: Check and install python for ansible
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
       changed_when: False
     - name: add user

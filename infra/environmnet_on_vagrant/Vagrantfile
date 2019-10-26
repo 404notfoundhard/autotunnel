@@ -3,6 +3,7 @@ Vagrant.configure("2") do |config|
       v.memory = 512
     end
     config.vm.define "web-server" do |app|
+      app.vm.synced_folder ".", "/vagrant", disabled: true      
       app.vm.box = "ubuntu/xenial64"
       app.vm.hostname = "web-server"
       app.vm.network :private_network, ip: "10.10.10.90"
@@ -12,7 +13,8 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.define "api-server" do |app|
-      app.vm.box = "ubuntu/xenial64"
+      app.vm.synced_folder ".", "/vagrant", disabled: true
+      app.vm.box = "ubuntu/bionic64"
       app.vm.hostname = "api-server"
       app.vm.network :private_network, ip: "10.10.10.91"
       app.vm.provision "ansible" do |ansible|
@@ -21,6 +23,7 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.define "postgres" do |app|
+      app.vm.synced_folder ".", "/vagrant", disabled: true
       app.vm.box = "ubuntu/xenial64"
       app.vm.hostname = "postgres"
       app.vm.network :private_network, ip: "10.10.10.92"
@@ -31,6 +34,7 @@ Vagrant.configure("2") do |config|
 
     (1..2).each do |i|
       config.vm.define "server#{i+1}" do |app|
+        app.vm.synced_folder ".", "/vagrant", disabled: true
         app.vm.box = "ubuntu/xenial64"
         app.vm.hostname = "test#{i+1}"
         app.vm.network :private_network, ip: "10.10.10.#{i+1}"
