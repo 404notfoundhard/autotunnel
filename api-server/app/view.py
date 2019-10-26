@@ -16,11 +16,8 @@ def get_ports_info(hostname):
             return connect_list.jsonify(ports_info)
 
         if request.form['reconnect_status'] == 'True':
-            print('reconnect flag true!')
-            ports_info = Connectlist.query.filter_by(hostname=hostname).first()
-            # print(connect_list.jsonify(ports_info))
-            kill_socket(ports_info)
-            return 'ok'
+            kill_socket(hostname)
+            return connect_list.jsonify(ports_info)
 
         # print('NOT THIS!')
         ports_info.last_connect_time = str(datetime.utcnow())

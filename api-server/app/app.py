@@ -51,13 +51,33 @@ class ConnectlistSchema(ma.Schema):
 connect_list = ConnectlistSchema(strict=True)
 
 
-def kill_socket(ports):
-    # print(ports)
-    cmd = ['ss', '-lpt']
+def kill_socket(hostname):
+    current_pid = None
+    ssh_port = Connectlist.query.with_entities(Connectlist.ssh_port)
+    filtred_port = ssh_port.filter_by(hostname=hostname).first()
+    cmd = ['sudo', 'ss', '-tlnp']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
-    for i in stdout[0].decode('utf-8').split('\n'):
-        print(i)
+    # get current freezing reverse ssh pid
+    for i in stdout.decode('utf-8').split('\n'):
+        if '127.0.0.1:'+str(filtred_port[0]) in i:
+            """
+            fast search pid, without regexp
+            example string:
+            LISTEN 0 128 127.0.0.1:48004 0.0.0.0:* users:(("sshd",pid=10826,fd=14))
+            """
+            current_pid = i.split('pid=')[1].split(',')[0]
+    if current_pid is None:
+        return 'ok'
+    for connect_string in stdout.decode('utf-8').split('\n'):
+        if 'pid='+current_pid in connect_string:
+            bad_socket = connect_string.split()[3]
+            if '127.0.0.1' in bad_socket:
+                port_4_kill = bad_socket.split(':')[1]
+                socket_kill = ['sudo', 'ss', '--kill', 'state', 'listening', 'src', ':'+port_4_kill]
+                proc = subprocess.Popen(socket_kill, stdout=subprocess.PIPE)
+                proc.communicate()
+    return 'ok'
 
 
 def find_available_ports():

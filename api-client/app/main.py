@@ -54,10 +54,11 @@ if __name__ == "__main__":
     while True:
         while True:
             try:
-                # reconnection_flag = False
                 conf_obj.token['reconnect_status'] = reconnection_flag
-                # customLogger('\nIN BEGIN: reconnection_flag is %s\n' % reconnection_flag)
-                r = requests.post(conf_obj.api_url, data=conf_obj.token)
+                r = requests.post(conf_obj.api_url, data=conf_obj.token, timeout=4)
+                # try json decode
+                # test = r.json()['ssh_port']
+                # del test
             except Exception as request_conn_err:
                 time_out_retry_connect += 5
                 customLogger('[ERROR] Connection failed at [%s]: ' % time.ctime())
@@ -80,12 +81,10 @@ if __name__ == "__main__":
                     customLogger('[INFO] Connection restored at [%s]' % time.ctime())
                     customLogger('\n--------------------------\n')
                     conf_obj.token['reconnect_status'] = reconnection_flag
-                    # r = requests.post(conf_obj.api_url, data=conf_obj.token)
                     time.sleep(5)
                     customLogger('Starting AutoSSH service....')
                     autosshCommunicate('start')
                     reconnection_flag = False
-                    # customLogger('IN ELSE: reconnection_flag is %s' % reconnection_flag)
                 time_out_retry_connect = 0
                 break
         try:
