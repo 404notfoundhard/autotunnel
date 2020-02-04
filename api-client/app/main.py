@@ -97,7 +97,16 @@ if __name__ == "__main__":
             daemonReload()
             autosshCommunicate('enable')
             autosshCommunicate('start')
-
+        except Exception as my_error:
+            customLogger('[ERROR] Start failed at [%s]: ' % time.ctime())
+            customLogger(str(my_error)+'\n')
+            render_autossh_unit(r.json()['ssh_port'],
+                                r.json()['db_port'],
+                                r.json()['vnc_port'])
+            daemonReload()
+            autosshCommunicate('enable')
+            autosshCommunicate('start')
+            
         service_autossh = service_autossh_raw.split('\n')
         for line in service_autossh:
             if re.search('ExecStart', line):
