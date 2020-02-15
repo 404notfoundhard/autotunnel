@@ -48,6 +48,7 @@ def autosshCommunicate(action):
 if __name__ == "__main__":
     time_out_retry_connect = 0
     reconnection_flag = False
+    time_out_retry_connect = 5
     if not os.path.exists('/var/log/yaica/'):
         os.makedirs('/var/log/yaica/')
 
@@ -56,11 +57,11 @@ if __name__ == "__main__":
             try:
                 conf_obj.token['reconnect_status'] = reconnection_flag
                 r = requests.post(conf_obj.api_url, data=conf_obj.token, timeout=4)
+                customLogger('[INFO] [%s]: Connection to service : ' % time.ctime())
                 # try json decode
                 # test = r.json()['ssh_port']
                 # del test
             except Exception as request_conn_err:
-                time_out_retry_connect += 5
                 customLogger('[ERROR] Connection failed at [%s]: ' % time.ctime())
                 customLogger(str(request_conn_err)+'\n')
                 customLogger('Next connection after: '
@@ -84,8 +85,8 @@ if __name__ == "__main__":
                     time.sleep(5)
                     customLogger('Starting AutoSSH service....')
                     autosshCommunicate('start')
+                    customLogger('Autossh has been started')
                     reconnection_flag = False
-                time_out_retry_connect = 0
                 break
         try:
             with open('/etc/systemd/system/AutoSSH.service', 'r') as file:
