@@ -57,7 +57,7 @@ if __name__ == "__main__":
             try:
                 conf_obj.token['reconnect_status'] = reconnection_flag
                 r = requests.post(conf_obj.api_url, data=conf_obj.token, timeout=4)
-                customLogger('[INFO] [%s]: Connection to service : ' % time.ctime())
+                customLogger('[INFO] [%s]: Connection to service \n' % time.ctime())
                 # try json decode
                 # test = r.json()['ssh_port']
                 # del test
